@@ -36,7 +36,7 @@ class SocketServer:
     def register(self, method: str, handler: CommandHandler) -> None:
         self._handlers[method] = handler
 
-    # 启动 TCP 服务器；若端口已被占用则退出进程
+    # 启动 TCP 服务器；若端口已被占用则退出进程。先探活再绑定的原因——跨平台安全地防止多实例
     async def start(self) -> str:
         try:
             _r, w = await asyncio.open_connection(self._host, self._port)
